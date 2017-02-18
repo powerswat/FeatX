@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -8,7 +9,12 @@ public class FeatXDriver {
     static DataPreProcessor dpp = new DataPreProcessor();
 
     public static void main(String[] args){
-        ArrayList<ArrayList<String>> readData = fp.readCSV("./../data/titanic.csv");
+        File basePath = new File(".");
+        String baseDir = basePath.getAbsolutePath();
+        baseDir = baseDir.replaceAll("\\.", "");
+
+        ArrayList<ArrayList<String>> readData
+                = fp.readCSV(baseDir + "data/titanic.csv");
 
     }
 }
