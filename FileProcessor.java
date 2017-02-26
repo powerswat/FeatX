@@ -1,16 +1,18 @@
 import java.io.*;
+import java.math.BigInteger;
 import java.util.ArrayList;
 
-/**
- * Created by youngsukcho on 2017. 2. 17..
- */
 public class FileProcessor {
+    private static final int NUM_PIXELS = 256;
+    private static int NUM_DATA;
+
     private static String[] columns;
-    private static ArrayList<String[]> dataTable;
-    private static String[] types;
+    private static BigInteger[] X;
+    private static int[] y;
+    private static ArrayList<String> rows;
 
     public void readCSV(String filename, boolean isFirstTitle){
-        ArrayList<String> rows = new ArrayList<String>();
+        rows = new ArrayList<String>();
         try {
             BufferedReader br = new BufferedReader(new FileReader(filename));
             String str = "";
@@ -30,38 +32,19 @@ public class FileProcessor {
 
                 rows.add(str);
             }
+            NUM_DATA = rows.size();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        dataTable = splitRow(rows);
     }
 
-    private ArrayList<String[]> splitRow(ArrayList<String> rows){
-        ArrayList<String[]> res = new ArrayList<String[]>();
-
-        for (String row: rows)
-            res.add(row.split(","));
-
-        return res;
-    }
-
-    public void fitDataType(){
-        findType();
-    }
-
-    public void findType(){
-        String[] row = dataTable.get(0);
-        types = new String[row.length];
-        for (int i = 0; i < row.length; i++) {
-            if (row[i].replaceAll("[-+0-9]", "").equals(""))
-                types[i] = "int";
-            else if (row[i].replaceAll("[-+0-9]", "").equals("."))
-                types[i] = "double";
-            else if (row[i].replaceAll("[A-Za-z]", "").length() != row[i].length())
-                types[i] = "String";
-            else
-                System.out.println("Error");
+    public void splitXAndY(){
+        X = new BigInteger[NUM_DATA];
+        y = new int[NUM_DATA];
+        for (int i = 0; i < rows.size(); i++) {
+            String row = rows.get(i).replaceAll(",", "");
+            y[i] = row.charAt(0) - '0';
+            X[i] = new BigInteger(row.substring(1, NUM_PIXELS+1), 2);
         }
     }
 
@@ -96,7 +79,15 @@ public class FileProcessor {
         return columns;
     }
 
-    public static ArrayList<String[]> getDataTable() {
-        return dataTable;
+    public static BigInteger[] getX() {
+        return X;
+    }
+
+    public static int[] getY() {
+        return y;
+    }
+
+    public static ArrayList<String> getRows() {
+        return rows;
     }
 }
