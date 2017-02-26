@@ -49,29 +49,26 @@ public class Prob1 {
         return signature;
     }
 
-    private boolean isMatch(int toggle, BigInteger num, Integer[] filter, int p){
+    private int[][] countMatchToggle(int[][] statCurDigit, BigInteger num, Integer[] filter,
+                                         int p, int filterID){
         int signature = makeSignature(num, filter, p);
-        if (signature == toggle)
-            return true;
-        return false;
+        statCurDigit[filterID][signature]++;
+        return statCurDigit;
     }
 
-    private Integer[][] calcRuleMatches(BigInteger[] X, int digit, int p, int limit,
+    private int[][] calcRuleMatches(BigInteger[] X, int digit, int p, int limit,
                                  int[] filterToggleSW, ArrayList<Integer[]> filters){
-        Integer[][] statCurDigit = new Integer[numFilterMap.intValue()][numFilterOnOff.intValue()];
+        int[][] statCurDigit = new int[numFilterMap.intValue()][numFilterOnOff.intValue()];
         // Extract a table for the current digit
         BigInteger[] curDigitTbl = extractCurDigitTbl(X, digit);
 
         for (int i = 0; i < numFilterMap.intValue(); i++) {
-            for (int j = 0; j < numFilterOnOff.intValue(); j++) {
-                int numMatches = 0;
-                for (int k = 0; k < NUM_CUR_DIGIT; k++) {
-                    if (isMatch(filterToggleSW[j], curDigitTbl[k], filters.get(i), p))
-                        numMatches++;
-                }
-                statCurDigit[i][j] = numMatches;
-            }
+            for (int k = 0; k < NUM_CUR_DIGIT; k++)
+                statCurDigit = countMatchToggle(statCurDigit, curDigitTbl[k], filters.get(i), p, i);
+//            if (i % 1000 == 0)
+//                System.out.println(i);
         }
+
         return statCurDigit;
     }
 
@@ -102,13 +99,13 @@ public class Prob1 {
         return res;
     }
 
-    private void filterValidRules(ArrayList<Integer[][]> statistics,
+    private void filterValidRules(ArrayList<int[][]> statistics,
                                                    ArrayList<Integer[]> filters, int limit){
         for (int k = 0; k < numFilterMap.intValue(); k++) {
             for (int j = 0; j < numFilterOnOff.intValue(); j++) {
                 FilterList fl = new FilterList(j, filters.get(k));
                 for (int i = 0; i < statistics.size(); i++) {
-                    Integer[][] statCurDigit = statistics.get(i);
+                    int[][] statCurDigit = statistics.get(i);
                     if (statCurDigit[k][j] > limit)
                         fl.setOccurrence(i, statCurDigit[k][j]);
                 }
@@ -120,7 +117,7 @@ public class Prob1 {
     }
 
     public void selectValidRules(BigInteger[] X, int[] y, int p, int limit){
-        ArrayList<Integer[][]> statistics = new ArrayList<Integer[][]>();
+        ArrayList<int[][]> statistics = new ArrayList<int[][]>();
 
         // Generate a set of toggle switches for the filter
         int[] filterToggleSW = generateToggleSW();
@@ -135,10 +132,9 @@ public class Prob1 {
     }
 
     public void solve(BigInteger[] X, int[] y, int p){
-
         countNumRules(p);
 
-        selectValidRules(X, y, p, 30);
+        selectValidRules(X, y, p, 0);
     }
 
     public static ArrayList<FilterList> getValidFilters() {

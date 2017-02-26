@@ -16,7 +16,7 @@ public class FeatXDriver {
         fp.splitXAndY();
 
         // Solve part 1
-        p1.solve(fp.getX(), fp.getY(), 2);
+        p1.solve(fp.getX(), fp.getY(), 1);
 
         // Solve part 2
         p2.solve(p1.getValidFilters(), p1.getFilterIdxMap(), fp.getX(), fp.getY());
