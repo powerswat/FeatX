@@ -65,8 +65,6 @@ public class Prob1 {
         for (int i = 0; i < numFilterMap.intValue(); i++) {
             for (int k = 0; k < NUM_CUR_DIGIT; k++)
                 statCurDigit = countMatchToggle(statCurDigit, curDigitTbl[k], filters.get(i), p, i);
-//            if (i % 1000 == 0)
-//                System.out.println(i);
         }
 
         return statCurDigit;
@@ -131,10 +129,10 @@ public class Prob1 {
         filterValidRules(statistics, filters, limit);
     }
 
-    public void solve(BigInteger[] X, int[] y, int p){
+    public void solve(BigInteger[] X, int[] y, int p, int limit){
         countNumRules(p);
 
-        selectValidRules(X, y, p, 0);
+        selectValidRules(X, y, p, limit);
     }
 
     public static ArrayList<FilterList> getValidFilters() {
@@ -147,5 +145,13 @@ public class Prob1 {
 
     public static BigInteger getNumRules() {
         return numRules;
+    }
+
+    public static void setValidFilters(ArrayList<FilterList> validFilters) {
+        Prob1.validFilters = validFilters;
+    }
+
+    public static void setFilterIdxMap(HashMap<String, Integer> filterIdxMap) {
+        Prob1.filterIdxMap = filterIdxMap;
     }
 }

@@ -1,6 +1,9 @@
 import java.io.*;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 public class FileProcessor {
     private static final int NUM_PIXELS = 256;

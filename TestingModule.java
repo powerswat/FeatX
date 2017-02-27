@@ -24,6 +24,6 @@ public class TestingModule {
 
         fp.readCSV(baseDir + "data/OCRpixels.csv", false);
 
-        test1_NumOfBits();
+//        test1_NumOfBits();
     }
 }

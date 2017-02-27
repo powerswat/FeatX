@@ -7,6 +7,8 @@ public class FilterList {
     public int[] occurrences = new int[10];
     public double[] probabilities = new double[10];
 
+    public FilterList(){}
+
     public FilterList(int toggleIdx, Integer[] filterIdcs){
         this.toggleIdx = toggleIdx;
         this.filterIdcs = filterIdcs;
@@ -35,5 +37,9 @@ public class FilterList {
         double pRule = (double)numRule / (double)numDigit;
         for (int i = 0; i < 10; i++)
             this.probabilities[i] = ((double)occurrences[i] / (double)numRule) / pRule;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
     }
 }
